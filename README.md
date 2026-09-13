@@ -67,15 +67,15 @@ Create `.repo/local_manifests/miatoll.xml`:
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
     <!-- Device Trees -->
-    <project name="KaKE-567/device_xiaomi_miatoll" path="device/xiaomi/miatoll" remote="github" revision="lineage-18.1" />
-    <project name="KaKE-567/device_xiaomi_sm6250-common" path="device/xiaomi/sm6250-common" remote="github" revision="lineage-18.1" />
+    <project name="KaKE-567/android_device_xiaomi_miatoll" path="device/xiaomi/miatoll" remote="github" revision="lineage-18.1" />
+    <project name="KaKE-567/android_device_xiaomi_sm6250-common" path="device/xiaomi/sm6250-common" remote="github" revision="lineage-18.1" />
 
     <!-- Vendor Trees -->
-    <project name="KaKE-567/vendor_xiaomi_miatoll" path="vendor/xiaomi/miatoll" remote="github" revision="lineage-18.1" />
-    <project name="KaKE-567/vendor_xiaomi_sm6250-common" path="vendor/xiaomi/sm6250-common" remote="github" revision="lineage-18.1" />
+    <project name="KaKE-567/android_vendor_xiaomi_miatoll" path="vendor/xiaomi/miatoll" remote="github" revision="lineage-18.1" />
+    <project name="KaKE-567/android_vendor_xiaomi_sm6250-common" path="vendor/xiaomi/sm6250-common" remote="github" revision="lineage-18.1" />
 
-    <!-- Kernel Tree -->
-    <project name="KaKE-567/android_kernel_xiaomi_sm6250-apex" path="kernel/xiaomi/sm6250" remote="github" revision="apex" />
+    <!-- Kernel Tree (Unified SM6250 with KernelSU) -->
+    <project name="KaKE-567/android_kernel_xiaomi_sm6250" path="kernel/xiaomi/sm6250" remote="github" revision="lineage-18.1" />
 
     <!-- Custom Packages (KaKe Elements UI & Settings) -->
     <remove-project name="LineageOS/android_packages_apps_Settings" />
@@ -86,6 +86,9 @@ Create `.repo/local_manifests/miatoll.xml`:
 
     <remove-project name="LineageOS/android_packages_apps_Trebuchet" />
     <project name="KaKE-567/android_packages_apps_Trebuchet" path="packages/apps/Trebuchet" remote="github" revision="lineage-18.1" />
+
+    <remove-project name="LineageOS/android_vendor_lineage" />
+    <project name="KaKE-567/android_vendor_lineage" path="vendor/lineage" remote="github" revision="lineage-18.1" />
 
     <remove-project name="LineageOS/android_frameworks_base" />
     <project name="KaKE-567/android_frameworks_base" path="frameworks/base" remote="github" revision="lineage-18.1" />
