@@ -27,29 +27,36 @@ on init && property:ro.boot.hwname=joyeuse
 on property:vendor.post_boot.parsed=1
     # Setup runtime cpusets
     write /dev/cpuset/top-app/cpus 0-7
-    write /dev/cpuset/foreground/cpus 0-5,7
-    write /dev/cpuset/background/cpus 4-5
-    write /dev/cpuset/system-background/cpus 2-5
-    write /dev/cpuset/restricted/cpus 2-5
+    write /dev/cpuset/foreground/cpus 0-7
+    write /dev/cpuset/background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-5
+    write /dev/cpuset/restricted/cpus 0-3
 
-    # Setup default schedTune value for foreground/top-app
+    # Setup default schedTune value for foreground/top-app/rt
     write /dev/stune/foreground/schedtune.prefer_idle 1
-    write /dev/stune/top-app/schedtune.boost 5
+    write /dev/stune/top-app/schedtune.boost 15
     write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /dev/stune/rt/schedtune.boost 10
+    write /dev/stune/rt/schedtune.prefer_idle 1
 
-    # Setup schedutil ratelimits
-    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 500
+    # Setup schedutil ratelimits - 0us fast ramp-up, 20ms hold between frames
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 0
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 20000
-    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/up_rate_limit_us 0
     write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/down_rate_limit_us 20000
 
     # Reinit lmkd to reconfigure lmkd properties
     setprop lmkd.reinit 1
 
-    # EAS
-    write /proc/sys/kernel/sched_upmigrate 95
-    write /proc/sys/kernel/sched_downmigrate 85
+    # EAS - aggressive migration to Big cores for gaming & audio smoothness (prevent Little core choke)
+    write /proc/sys/kernel/sched_upmigrate 60
+    write /proc/sys/kernel/sched_downmigrate 50
+    write /proc/sys/kernel/sched_group_upmigrate 75
+    write /proc/sys/kernel/sched_group_downmigrate 60
+    write /proc/sys/kernel/sched_walt_rotate_big_tasks 1
 
-    # Enable schedutil predicted-load boosting
+    # Enable schedutil predicted-load boosting and disable conservative pl
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/pl 1
     write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/pl 1
+    write /proc/sys/kernel/sched_conservative_pl 0
+
